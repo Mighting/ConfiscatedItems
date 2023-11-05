@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Input;
 
 namespace ConfiscatedItems.ViewModel
 {
-    public class ConfiscatedItemsViewModel : INotifyPropertyChanged
+    public class ConfiscatedItemsViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         public event PropertyChangedEventHandler PropertyChanged;
         ConfiscatedItemsContext Context = new ConfiscatedItemsContext();
@@ -19,6 +20,30 @@ namespace ConfiscatedItems.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public string Error => null;
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(TxtItemName):
+                        if (string.IsNullOrEmpty(TxtItemName))
+                            return "Angiv et navn";
+                        break;
+                    case nameof(Category):
+                        if (string.IsNullOrEmpty(Category))
+                            return "Angiv en Kategori";
+                        break;
+                        // Define validation for other properties...
+                }
+
+                return null; // No error
+            }
+        }
+
+        [Required(ErrorMessage = "Angiv et navn")]
         private string txtItemName;
         public string TxtItemName
         {
@@ -47,6 +72,7 @@ namespace ConfiscatedItems.ViewModel
             }
         }
 
+        [Required(ErrorMessage ="Angiv en kategori")]
         private string category;
         public string Category
         {
@@ -157,6 +183,11 @@ namespace ConfiscatedItems.ViewModel
             };
             Context.Items.Add(item);
             Context.SaveChanges();
+
+            //Reset text indput boxes
+            TxtItemName = "";
+            TxtDescription = "";
+            Category = "";
 
             GetItem();
         }

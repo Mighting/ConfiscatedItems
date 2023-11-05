@@ -75,7 +75,7 @@
 
                 <TextBox      
                     x:Name="txtItemName"
-                    Text="{Binding TxtItemName, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding TxtItemName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                     Grid.Row="0"
                      Grid.Column="1"
                  />
@@ -89,7 +89,7 @@
 
                 <TextBox      
                     x:Name="txtDescription"
-                    Text="{Binding TxtDescription, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding TxtDescription, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                     Grid.Row="2"
                      Grid.Column="2"
                  />
